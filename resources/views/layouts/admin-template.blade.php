@@ -60,9 +60,13 @@
                                 @if(Auth::user()->usertype == "admin")
                                     <li><a href="{{route('home')}}" class="hvr-bounce-to-right"><img src="{{url('images/home.png')}}" class="iconz"> Dashboard</a>
                                     </li>
+                                     <li><a href="{{route('branch.index')}}" class="hvr-bounce-to-right"><img src="{{url('images/company.png')}}" class="iconz"> Branch</a>
+                                    </li>
                                     <li><a href="{{route('staff.index')}}" class="hvr-bounce-to-right"><img src="{{url('images/company-workers.png')}}" class="iconz"> Staff</a>
                                     </li>
-                                    <li><a href="{{route('branch.index')}}" class="hvr-bounce-to-right"><img src="{{url('images/company.png')}}" class="iconz"> Branch</a>
+                                    <li><a href="{{route('admin.type.index')}}" class="hvr-bounce-to-right"><img src="{{url('images/keyboard.png')}}" class="iconz"> Item Type</a>
+                                    </li>
+                                    <li><a href="{{route('admin.items.index')}}" class="hvr-bounce-to-right"><img src="{{url('images/computer(1).png')}}" class="iconz"> Item</a>
                                     </li>
                                     <li><a href="{{route('admin.report')}}" class="hvr-bounce-to-right"><img src="{{url('images/file.png')}}" class="iconz"> Reports </a>
                                     </li>
@@ -96,6 +100,7 @@
                         </div> --}}
 
                         <ul class="nav navbar-nav navbar-right">
+
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <img src="{{asset('images/profile.png')}}" alt="">{{Auth::user()->name}}
@@ -103,6 +108,9 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li>
+                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                            {{ __('Account Settings') }}
+                                        </a>
                                          <a class="dropdown-item" href="{{ route('reset') }}">
                                             {{ __('Change Password') }}
                                         </a>
@@ -115,6 +123,9 @@
                                         </form>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="">
+                                <label style="margin-top: 22px;margin-right: 7px;">@if(Auth::user()->branchid == 0) Admin @else {{ branch(Auth::user()->branchid)->branchname }} @endif</label>
                             </li>
                         </ul>
                     </nav>
@@ -156,7 +167,16 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{{asset('../build/js/custom.min.js')}}"></script>
+    <script type="text/javascript">
+          $('.normal').on('click', function() {
+              var $this = $(this);
+            $this.button('loading');
+              setTimeout(function() {
+                 $this.button('reset');
+             }, 1000);
+          });
 
+        </script>
     @yield('footer-assets')
 </body>
 

@@ -55,6 +55,20 @@
                             @endif
                         </div>
                       </div>
+                      <input type="hidden" name="id" value="{{$item->id}}">
+
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Item Code <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="text" id="first-name" name="item_code" required="required" class="form-control col-md-7 col-xs-12{{ $errors->has('item_code') ? ' is-invalid' : '' }}" value="{{$item->item_code}}" >
+                            @if ($errors->has('item_code'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('item_code') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                      </div>
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Type <span class="required">*</span>
                         </label>

@@ -144,4 +144,7 @@ class HomeController extends Controller
                  );
         return redirect()->route('home')->with($notification);
     }
+    public function showprofile(){
+        return view('profile.index');
+    }
 }

@@ -99,6 +99,7 @@ class StaffController extends Controller
         'type' => 'required|string',
         'price' => 'required|integer',
         'status' => 'required|integer',
+        'item_code' => 'required|unique:items',
       ]);
          if ($request->hasFile('photo')) {
 
@@ -115,6 +116,7 @@ class StaffController extends Controller
                 'photo'            => $ph,
                 'price'            => $request['price'],
                 'status'           => $request['status'],
+                'item_code'           => $request['item_code'],
                 'addedby'          => Auth::user()->id,
                 'addedat'          => Carbon::now()->format('m/d/Y'),
             ]);
@@ -138,6 +140,7 @@ class StaffController extends Controller
         'type' => 'required|string',
         'price' => 'required|integer',
         'status' => 'required|integer',
+        'item_code' => 'required|unique:items,item_code,'.$request['id']
       ]);
           if ($request->hasFile('photo')) {
 
@@ -154,6 +157,7 @@ class StaffController extends Controller
             $item->description = $request['description'];
             $item->type = $request['type'];
             $item->price = $request['price'];
+            $item->item_code = $request['item_code'];
             $item->status = $request['status'];
             $item->save();
     }
@@ -164,6 +168,7 @@ class StaffController extends Controller
             $item->description = $request['description'];
             $item->type = $request['type'];
             $item->price = $request['price'];
+            $item->item_code = $request['item_code'];
             $item->status = $request['status'];
             $item->save();
     }
@@ -171,7 +176,7 @@ class StaffController extends Controller
             'message'    => 'Item successfully updated!!',
             'alert-type' => 'success'
         );
-        return redirect()->route('item.index')->with($notification);
+        return redirect()->route('items.index')->with($notification);
     }
     public function itemDelete($id){
         Item::where('id', $id)->update(['status' => 0]);

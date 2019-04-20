@@ -75,13 +75,14 @@
                         <tr>
                           <th>Branch</th>
                            <th class="col-md-2">Photo</th>
-                          <th>Item Type</th>
+                          <th>Item Code</th>
+                           <th>Item Type</th>
                           <th>Item Name</th>
                           <th>Price</th>
                           <th class="col-md-3">Description</th>
                           <th>Added By</th>
                           <th>Status</th>
-                          <th><i class="fa fa-settings"></i>Action</th>
+                          {{-- <th><i class="fa fa-settings"></i>Action</th> --}}
                         </tr>
                       </thead>
 
@@ -92,6 +93,7 @@
                         <tr>
                           <td>{{$item->getBranch($item->branchid)->branchname}}</td>
                           <td><img src="/uploads/{{$item->photo}}" width="120" height="80"></td>
+                          <td>{{$item->item_code}}</td>
                           <td>{{$item->getType($item->type)->type}}</td>
                           <td>{{$item->name}}</td>
                           <td>P{{$item->price}}</td>
@@ -104,10 +106,10 @@
                               <p class="text-danger">Not Active</p>
                               @endif
                             </td>
-                            <td class="text-center">
+                            {{-- <td class="text-center">
                                 <a href="{{route('item.edit', ['id' => $item->id])}}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
                                 <a href="{{route('item.delete', ['id' => $item->id])}}" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove</a>
-                            </td>
+                            </td> --}}
                         </tr>
                       @endforeach
 

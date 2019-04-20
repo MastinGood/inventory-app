@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
 @endsection
 <!-- page content -->
-        @if(Auth::user()->usertype == 'staff' && Auth::user()->status == 1)
+        @if(Auth::user()->usertype == 'admin' && Auth::user()->status == 1)
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
@@ -40,7 +40,7 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" action="{{route('item.store')}}" method="POST" enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="demo-form2" action="{{route('admin.item.store')}}" method="POST" enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
                       @csrf
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Item Name <span class="required">*</span>
@@ -73,7 +73,29 @@
                           <select class="form-control col-md-7 col-xs-12{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type">
                             @if(count($types))
                               @foreach($types->all() as $type)
-                              <option value="{{$type->id}}">{{$type->type}}</option>
+                              <option value="{{$type->id}}-{{$type->getBranch($type->branchid)->id}}">{{$type->type}} ({{$type->getBranch($type->branchid)->branchname}})</option>
+                              @endforeach
+                            @endif
+                          </select>
+                            @if ($errors->has('type'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('type') }}</strong>
+                                </span>
+                                @else
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>* Note that this branch should match to branch you coose after.</strong>
+                                </span>
+                            @endif
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Choose Branch <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control col-md-7 col-xs-12{{ $errors->has('type') ? ' is-invalid' : '' }}" name="branch">
+                            @if(count($branch))
+                              @foreach($branch->all() as $bra)
+                              <option value="{{$bra->id}}">{{$bra->branchname}}</option>
                               @endforeach
                             @endif
                           </select>
@@ -127,7 +149,7 @@
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Photo <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="file" id="src" name="photo" required="required" class="form-control col-md-7 col-xs-12{{ $errors->has('photo') ? ' is-invalid' : '' }}" value="{{old('photo')}}" >
+                          <input type="file" id="src" name="photo" accept="/*" capture="camera" required="required" class="form-control col-md-7 col-xs-12{{ $errors->has('photo') ? ' is-invalid' : '' }}" value="{{old('photo')}}" >
                             @if ($errors->has('photo'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('photo') }}</strong>
@@ -148,7 +170,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <a href="{{route('items.index')}}" class="btn btn-primary" type="button">Back</a>
                           <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success normal">Submit</button>
+                          <button type="submit" class="btn btn-success normal" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Loading...">Submit</button>
                         </div>
                       </div>
                     </form>
@@ -168,15 +190,25 @@
          <script src="{{asset('js/toastr.min.js')}}"></script>
            <script type="text/javascript">
               @if(Session::has('message'))
-              var type = "{{Session::get('alert-type','success')}}";
+              var type = "{{Session::get('alert-type','warning')}}";
               switch(type){
-                case 'success':
-                toastr.success("{{Session::get('message')}}");
+                case 'warning':
+                toastr.warning("{{Session::get('message')}}");
                 break;
               }
 
              @endif
           </script>
+          <script type="text/javascript">
+          $('.normal').on('click', function() {
+              var $this = $(this);
+            $this.button('loading');
+              setTimeout(function() {
+                 $this.button('reset');
+             }, 2000);
+          });
+
+        </script>
           <script type="text/javascript">
            function showImage(src,target) {
             var fr=new FileReader();
@@ -192,25 +224,25 @@
           var target = document.getElementById("target");
           showImage(src,target);
         </script>
-        <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+        <script src="{{asset('../vendors/bootstrap-daterangepicker/daterangepicker.js')}}"></script>
         <!-- bootstrap-wysiwyg -->
-        <script src="../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js"></script>
-        <script src="../vendors/jquery.hotkeys/jquery.hotkeys.js"></script>
-        <script src="../vendors/google-code-prettify/src/prettify.js"></script>
+        <script src="{{asset('../vendors/bootstrap-wysiwyg/js/bootstrap-wysiwyg.min.js')}}"></script>
+        <script src="{{asset('../vendors/jquery.hotkeys/jquery.hotkeys.js')}}"></script>
+        <script src="{{asset('../vendors/google-code-prettify/src/prettify.js')}}"></script>
         <!-- jQuery Tags Input -->
-        <script src="../vendors/jquery.tagsinput/src/jquery.tagsinput.js"></script>
+        <script src="{{asset("../vendors/jquery.tagsinput/src/jquery.tagsinput.js")}}"></script>
         <!-- Switchery -->
-        <script src="../vendors/switchery/dist/switchery.min.js"></script>
+        <script src="{{asset('../vendors/switchery/dist/switchery.min.js')}}"></script>
         <!-- Select2 -->
-        <script src="../vendors/select2/dist/js/select2.full.min.js"></script>
+        <script src="{{asset('../vendors/select2/dist/js/select2.full.min.js')}}"></script>
         <!-- Parsley -->
-        <script src="../vendors/parsleyjs/dist/parsley.min.js"></script>
+        <script src="{{asset('../vendors/parsleyjs/dist/parsley.min.js')}}"></script>
         <!-- Autosize -->
-        <script src="../vendors/autosize/dist/autosize.min.js"></script>
+        <script src="{{asset('../vendors/autosize/dist/autosize.min.js')}}"></script>
         <!-- jQuery autocomplete -->
-        <script src="../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js"></script>
+        <script src="{{asset('../vendors/devbridge-autocomplete/dist/jquery.autocomplete.min.js')}}"></script>
         <!-- starrr -->
-        <script src="../vendors/starrr/dist/starrr.js"></script>
+        <script src="{{asset('../vendors/starrr/dist/starrr.js')}}"></script>
 
         @endsection
 @endsection

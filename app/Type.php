@@ -16,7 +16,7 @@ class Type extends Model
         return $this->belongsTo(Branch::class);
     }
     public function getBranch($id){
-        $type= Type::where('id', $id)->first();
-        return Branch::where('id', $type->id)->first();
+
+        return Branch::where('id', $id)->first();
     }
 }

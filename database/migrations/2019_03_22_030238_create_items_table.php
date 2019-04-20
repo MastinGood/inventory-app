@@ -16,14 +16,16 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('branchid');
-            $table->string('type');
+            $table->string('type', 50);
             $table->string('photo')->nullable();
-            $table->string('name');
+            $table->string('name', 50);
+            $table->string('item_code',20)->unique();
             $table->integer('price');
             $table->longText('description');
-            $table->string('addedby');
-            $table->string('status');
+            $table->string('addedby', 20);
+            $table->string('status', 2);
             $table->string('addedat');
+            $table->timestamps();
         });
     }
 

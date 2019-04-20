@@ -12,7 +12,7 @@
 
 @endsection
 <!-- page content -->
-        @if(Auth::user()->usertype == 'staff' && Auth::user()->status == 1)
+        @if(Auth::user()->usertype == 'admin' && Auth::user()->status == 1)
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
@@ -22,7 +22,7 @@
 
               <div class="title_right">
 
-                    <a href="{{route('type.add')}}" class="btn btn-info btn-lg pull-right up"><img src="{{asset('images/add.png')}}" height="25" width="25"> Add ITEM TYPE</a>
+                    <a href="{{route('admin.type.add')}}" class="btn btn-info btn-lg pull-right up"><img src="{{asset('images/add.png')}}" height="25" width="25"> Add ITEM TYPE</a>
 
               </div>
             </div>
@@ -41,7 +41,7 @@
                           <th>Type</th>
                           <th>Status</th>
                           <th>Added By</th>
-                         {{--  <th><i class="fa fa-settings"></i>Action</th> --}}
+                          <th><i class="fa fa-settings"></i>Action</th>
                         </tr>
                       </thead>
 
@@ -61,14 +61,14 @@
                               @endif
                             </td>
                             <td>{{$type->getName($type->userid)->name}}</td>
-                           {{--  <td class="text-center">
+                            <td class="text-center">
                               @if($type->status == 1)
-                                <a href="{{route('type.edit', ['id' => $type->id])}}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
-                                <a href="{{route('type.destroy', ['id' => $type->id])}}" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove</a>
+                                <a href="{{route('admin.type.edit', ['id' => $type->id])}}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                                <a href="{{route('admin.type.destroy', ['id' => $type->id])}}" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Remove</a>
                                 @else
-                                 <a href="{{route('type.edit', ['id' => $type->id])}}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                                 <a href="{{route('admin.type.edit', ['id' => $type->id])}}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span> Edit</a>
                                 @endif
-                            </td> --}}
+                            </td>
                           </tr>
                         @endforeach
                        @endif

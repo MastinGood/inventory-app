@@ -367,7 +367,7 @@
         </div>
         @if(Auth::user()->usertype == 'admin' && Auth::user()->status == 1)
             <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
                     <div class="x_panel" style="height:600px;">
                         <div class="x_content" id="app">
                             <nav>
@@ -495,7 +495,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="col-md-6 col-sm-12 col-xs-12">
                     <div class="x_panel" style="height:600px;">
                         <div class="x_title">
                             <h2>All Branch <small>Total</small></h2>
@@ -544,7 +544,7 @@
                     </div>
                 </div>
                  <div class="col-md-12 col-sm-12 col-xs-12">
-                      <div class="col-md-6 col-sm-6 col-xs-12">
+                      <div class="col-md-6 col-sm-12 col-xs-12">
                           <div class="x_panel" style="height:600px!important;">
                             <div class="x_title">
                               <h2>Todays Activity<small>Top 5</small></h2>
@@ -605,19 +605,19 @@
             </div>
         @else
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12 col-xs-12">
                     <div class="x_panel" style="height:600px;">
                         <div class="x_content" id="app">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 col-xs-4 col-xs-4">
                                             <a class="nav-item nav-link active sa" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" v-on:click="showTab1"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;" /> Today's Asset</a>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 col-xs-4 col-xs-4">
                                             <a class="nav-item nav-link sa" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" v-on:click="showTab2"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Yesterday</a>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 col-xs-4 col-xs-4">
                                             <a class="nav-item nav-link sa" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" v-on:click="showTab3"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Last Month</a>
                                         </div>
                                     </div>

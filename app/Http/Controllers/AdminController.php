@@ -303,4 +303,218 @@ class AdminController extends Controller
     public function logsIndex(){
         return view('admin.logs.index');
     }
+
+    public function typeIndex(){
+        $types = Type::orderBy('id', 'DESC')->get();
+
+        return view('admin.item_type.index', compact('types'));
+    }
+     public function typeAdd(){
+        $branch = Branch::all();
+        return view('admin.item_type.add',compact('branch'));
+    }
+    public function typeStore(Request $request){
+
+        $request->validate([
+            'type' => ['required', 'string'],
+            'status' => ['required', 'numeric'],
+            'branch' => ['required', 'string']
+        ]);
+
+        Type::create([
+            'branchid' => $request['branch'],
+            'type'     => $request['type'],
+            'status'   => $request['status'],
+            'userid'   => Auth::user()->id,
+        ]);
+
+         $notification = array(
+            'message'    => 'Iten Type successfully added!!',
+            'alert-type' => 'success'
+        );
+
+         return redirect()->route('admin.type.index')->with($notification);
+    }
+    public function typeEdit(Type $type){
+        $branch = Branch::all();
+        return view('admin.item_type.edit' ,compact('type', 'branch'));
+    }
+    public function typeUpdate(Type $type, Request $request){
+         $request->validate([
+            'type'   => ['required', 'string'],
+            'status' => ['required', 'integer'],
+            'branch' => ['required', 'string']
+        ]);
+
+        $type->type   = $request['type'];
+        $type->status = $request['status'];
+        $type->branchid = $request['branch'];
+        $type->save();
+
+         $notification = array(
+            'message'    => 'Item Type successfully updated!!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('admin.type.index')->with($notification);
+    }
+    public function typeDelete($id){
+
+        Type::whereId($id)->update(['status' => 0]);
+        $notification = array(
+            'message'    => 'Item Type successfully removed!!',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+
+    public function itemIndex(){
+       $items = Item::whereStatus(1)->orderBy('id', 'DESC')->get();
+       return view('admin.item.index', compact('items'));
+    }
+    public function itemAdd(){
+        $types = Type::whereStatus(1)->get();
+        $branch = Branch::all();
+        return view('admin.item.add', compact('types', 'branch'));
+    }
+    public function itemStore(Request $request){
+        $this->validate($request, [
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'type' => 'required|string',
+        'price' => 'required|integer',
+        'status' => 'required|integer',
+        'branch' => 'required|string',
+        'item_code' => 'required|unique:items'
+      ]);
+
+        $br = explode('-', $request['type']);
+
+        $type = $br[0];
+        $bran = $br[1];
+        if($request['branch'] == $bran){
+            if ($request->hasFile('photo')) {
+            $image = $request->file('photo');
+            $ph = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            $image->move($destinationPath, $ph);
+
+               Item::create([
+                'branchid'         => $bran,
+                'name'             => $request['name'],
+                'item_code'        => $request['item_code'],
+                'description'      => $request['description'],
+                'type'             => $type,
+                'photo'            => $ph,
+                'price'            => $request['price'],
+                'status'           => $request['status'],
+                'addedby'          => Auth::user()->id,
+                'addedat'          => Carbon::now()->format('m/d/Y'),
+            ]);
+
+          }
+          $notification = array(
+            'message'    => 'Item successfully added!!',
+            'alert-type' => 'success'
+        );
+          return redirect()->route('admin.items.index')->with($notification);
+        }
+        else{
+            $notification = array(
+            'message'    => 'The branch you choose in type should match to the branch you choose!!',
+            'alert-type' => 'warning'
+            );
+            return redirect()->back()->with($notification);
+        }
+
+    }
+    public function itemEdit(Item $item){
+         $types = Type::all();
+         $branch = Branch::all();
+        return view('admin.item.edit', compact('item','types', 'branch'));
+    }
+    public function itemUpdate(Item $item, Request $request){
+        $this->validate($request, [
+        'name' => 'required|string',
+        'description' => 'required|string',
+        'type' => 'required|string',
+        'price' => 'required|integer',
+        'status' => 'required|integer',
+        'branch' => 'required|string',
+        'item_code' => 'required|unique:items,item_code,'.$request['id']
+      ]);
+        $br = explode('-', $request['type']);
+        $type = $br[0];
+        $bran = $br[1];
+         if($request['branch'] == $bran)
+         {
+            if ($request->hasFile('photo')) {
+
+            $image = $request->file('photo');
+            $ph = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('uploads');
+            $image->move($destinationPath, $ph);
+            $item->photo = $ph;
+            $item->save();
+
+            $item->branchid = $bran;
+            $item->addedby = $request['addedby'];
+            $item->name = $request['name'];
+            $item->item_code = $request['item_code'];
+            $item->description = $request['description'];
+            $item->type = $type;
+            $item->price = $request['price'];
+            $item->status = $request['status'];
+            $item->save();
+            }
+            else{
+                    $item->item_code = $request['item_code'];
+                    $item->branchid = $bran;
+                    $item->addedby = Auth::user()->id;
+                    $item->name = $request['name'];
+                    $item->description = $request['description'];
+                    $item->type = $type;
+                    $item->price = $request['price'];
+                    $item->status = $request['status'];
+                    $item->save();
+            }
+             $notification = array(
+                'message'    => 'Item successfully updated!!',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('admin.items.index')->with($notification);
+         }
+         else
+         {
+            $notification = array(
+                'message'    => 'The branch you choose in type should match to the branch you choose!!',
+                'alert-type' => 'warning'
+            );
+            return redirect()->back()->with($notification);
+         }
+
+    }
+    public function itemDelete($id){
+        Item::where('id', $id)->update(['status' => 0]);
+
+        $notification = array(
+            'message'    => 'Item Type successfully removed!!',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+    public function itemSearch(Request $request){
+    $method = $request->method();
+    if($request->isMethod('POST')){
+        $keyword = $request['search'];
+        $date = explode("-", $keyword);
+        $from = Carbon::parse($date[0])->format('m/d/Y');
+        $to = Carbon::parse($date[1])->format('m/d/Y');
+        $items = Item::whereBetween('addedat', array($from, $to))->get();
+         return view('admin.item.index', compact('items'));
+    }
+    else{
+        $items = Item::where('status' , 1 )->orderBy('id', 'DESC')->get();
+       return view('admin.item.index', compact('items'));
+         }
+    }
 }

@@ -48,6 +48,17 @@ h1,h2,h3,h4,h5,h6,p,label,td,button,li,small,.x_title h2, .title{
    font-family: 'Open Sans', sans-serif!important;
     font-weight: 400!important;
 }
+h1,h2,h3,h4,h5,h6, li{
+  color:#404e67!important;
+}
+.he{
+  color: #fff!important;
+}
+strong{
+  font-family: 'Open Sans', sans-serif!important;
+  font-weight: 400!important;
+  color: red;
+}
 .text-center, .x_title h2{
   color: #464855!important;
 }
@@ -157,7 +168,7 @@ input,select{
 }
 .btn-group{
     position: absolute!important;
-    margin-left: 221px!important;
+    margin-left: -10px!important;
 }
 table{
     width: 100%!important;

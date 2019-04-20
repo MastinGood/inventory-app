@@ -5,12 +5,12 @@
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
 @endsection
 <!-- page content -->
-        @if(Auth::user()->usertype == 'staff' && Auth::user()->status == 1)
+        @if(Auth::user()->usertype == 'admin' && Auth::user()->status == 1)
         <div class="right_col" role="main">
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3>Add Type</h3>
+                <h3>Update Item Type</h3>
                 <br>
               </div>
               <br>
@@ -40,16 +40,35 @@
                   </div>
                   <div class="x_content">
                     <br />
-                    <form id="demo-form2" action="{{route('type.store')}}" method="POST" data-parsley-validate class="form-horizontal form-label-left">
+                    <form id="demo-form2" action="{{route('admin.type.update', ['id' => $type->id])}}" method="POST" data-parsley-validate class="form-horizontal form-label-left">
+                      @method('PATCH');
                       @csrf
                       <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Item Type <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="first-name" name="type" required="required" class="form-control col-md-7 col-xs-12{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{old('name')}}" >
+                          <input type="text" id="first-name" name="type" required="required" class="form-control col-md-7 col-xs-12{{ $errors->has('name') ? ' is-invalid' : '' }}" value="{{$type->type}}" >
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Branch <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <select class="form-control col-md-7 col-xs-12" name="branch">
+                            @if(count($branch))
+                            @foreach($branch as $bra)
+                              <option value="{{$bra->id}}" @if($bra->id == $type->branchid) selected @endif>{{$bra->branchname}}</option>
+                            @endforeach
+                            @endif
+                          </select>
+                          @if ($errors->has('branch'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('branch') }}</strong>
                                 </span>
                             @endif
                         </div>
@@ -59,8 +78,8 @@
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
                           <select class="form-control col-md-7 col-xs-12" name="status">
-                            <option value="1" selected>Active</option>
-                            <option value="0">Not Active</option>
+                            <option value="1" {{ $type->status == 1 ? 'selected' : '' }}>Active</option>
+                            <option value="0" {{ $type->status == 0 ? 'selected' : '' }}>Not Active</option>
                           </select>
                           @if ($errors->has('status'))
                                 <span class="invalid-feedback" role="alert">
@@ -72,9 +91,9 @@
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <a href="{{route('type.index')}}" class="btn btn-primary" type="button">Back</a>
+                          <a href="{{route('admin.type.index')}}" class="btn btn-primary" type="button">Back</a>
                           <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success normal">Submit</button>
+                          <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                       </div>
                     </form>
