@@ -301,3 +301,16 @@ small{
 .tile-stats .count{
   font-size: 32px!important;
 }
+ul .user_data li{
+   border-bottom: 1px dotted #e6e6e6!important;
+    padding: 10px!important;
+}
+ul.bar_tabs > li.active{
+  border-right: 6px solid #96c53a !important;
+}
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{
+  border-right-color: #96c53a !important;
+}
+.st{
+  font-size: 12px!important;
+}

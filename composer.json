@@ -37,7 +37,8 @@
             "App\\": "app/"
         },
         "files": [
-        "app/Helpers/branch.php"
+        "app/Helpers/branch.php",
+        "app/Helpers/date.php"
         ],
         "classmap": [
             "database/seeds",

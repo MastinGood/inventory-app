@@ -1,6 +1,7 @@
 @extends('layouts.admin-template')
 @section('header-assets')
 <link rel="stylesheet" type="text/css" href="{{asset('css/style.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
 @endsection
 @section('content')
 <!-- page content -->
@@ -27,58 +28,98 @@
                       <div class="profile_img">
                         <div id="crop-avatar">
                           <!-- Current avatar -->
-                          <img class="img-responsive avatar-view" src="{{url('images/user-img.jpg')}}" width="120" height="120" style="border-radius: 50%;border:4px solid white;" alt="Avatar" title="Change the avatar">
+                          @if(isset($profile->photo) && $profile->photo !=null)
+                          <img class="img-responsive avatar-view" src="/profile/{{$profile->photo}}" width="120" style="border-radius: 50%;border:4px solid white;height: 123px!important;" alt="Avatar" title="Change the avatar">
+                          @else
+                          <img class="img-responsive avatar-view" src="{{url('images/placeholder.jpg')}}" width="120" height="120" style="border-radius: 50%;border:4px solid white;" alt="Avatar" title="Change the avatar">
+                          @endif
                         </div>
                       </div>
-                      <h3>Samuel Doe</h3>
+                      <h3>{{ $profile->getName($profile->userid)->name ?? 'Not specified' }}</h3>
 
                       <ul class="list-unstyled user_data">
-                        <li><i class="fa fa-map-marker user-profile-icon"></i> San Francisco, California, USA
+                        <li><i class="fa fa-map-marker user-profile-icon"> </i> {{ $profile->address ?? 'Not specified' }}
                         </li>
 
                         <li>
-                          <i class="fa fa-briefcase user-profile-icon"></i> Software Engineer
+                          <i class="fa fa-briefcase user-profile-icon"> </i> @if($profile->birthdate == null) Not specified @else {{$profile->getDate($profile->birthdate)}}@endif
                         </li>
 
                         <li class="m-top-xs">
                           <i class="fa fa-external-link user-profile-icon"></i>
-                          <a href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
+                          <a href="http://www.kimlabs.com/profile/" target="_blank">{{ $profile->website ?? 'Not specified' }}</a>
                         </li>
                       </ul>
-
-                      <a class="btn btn-success"><i class="fa fa-edit m-right-xs"></i>Edit Profile</a>
+                      @if($id == auth()->user()->id)
+                      <a class="btn btn-success" data-toggle="modal" data-target="#showModal"><i class="fa fa-edit m-right-xs"></i>Change Profile</a>
                       <br />
+                      @else
+                      <br>
+
+                      @endif
 
                       <!-- start skills -->
-                      <h4>Skills</h4>
+                      <h4>Contact Information</h4>
                       <ul class="list-unstyled user_data">
-                        <li>
-                          <p>Web Applications</p>
-                          <div class="progress progress_sm">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                          </div>
+                        <li style="border-bottom: 1px dotted #e6e6e6;padding: 10px;">
+                          <label>Email</label>
+                          <p>{{ $profile->getName($profile->userid)->email ?? 'Not specified' }}</p>
                         </li>
-                        <li>
-                          <p>Website Design</p>
-                          <div class="progress progress_sm">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="70"></div>
-                          </div>
+                        <li style="border-bottom: 1px dotted #e6e6e6;padding: 10px;">
+                          <label>Mobile Number</label>
+                          <p>{{ $profile->mobile_number ?? 'Not specified' }}</p>
                         </li>
-                        <li>
-                          <p>Automation & Testing</p>
-                          <div class="progress progress_sm">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="30"></div>
-                          </div>
+                        <li style="border-bottom: 1px dotted #e6e6e6;padding: 10px;">
+                          <label>Facebook</label>
+                         <p>{{ $profile->facebook ?? 'Not specified' }}</p>
                         </li>
-                        <li>
-                          <p>UI / UX</p>
-                          <div class="progress progress_sm">
-                            <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="50"></div>
-                          </div>
+                        <li style="border-bottom: 1px dotted #e6e6e6;padding: 10px;">
+                          <label>Skype</label>
+                          <p>{{ $profile->skype ?? 'Not specified' }}</p>
                         </li>
                       </ul>
                       <!-- end of skills -->
+                      <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <img src="{{url('images/bg-img1.jpg')}}" style="width: 100%;">
+                        <div class="row">
+                          @if(!empty(getImage()) && getImage() !==null)
+                          <img id="target" style="border-radius: 50%;display: block;margin:0px auto;margin-top: -50px;border:3px solid #fff;" src="/profile/{{getImage()}}" alt="" height="120" width="120" />
+                          @else
+                          <img id="target" style="border-radius: 50%;display: block;margin:0px auto;margin-top: -50px;border:3px solid #fff;" src="{{asset('images/placeholder.jpg')}}" alt="" height="120" width="120" />
+                          @endif
+                        </div>
+                          <div class="col-md-12 colsm-12 col-xs-12">
+                            <br>
+                              <h4>Change Profile</h4>
+                              <form method="POST" action="{{route('changePic', ['id' => $profile->id])}}" enctype="multipart/form-data">
+                                  @method('PATCH')
+                                  @csrf
+                                  <div class="input-group">
 
+                                      <label class="input-group-btn">
+                                          <span class="btn btn-primary" style="height: 40px;">
+                                              Browse&hellip; <input type="file" name="photo" id="src" style="display: none;" multiple>
+                                          </span>
+                                      </label>
+                                      <input type="text"  class="form-control" readonly style="border-left: 0px!important;border-radius: 0px!important;width: 200px!important;">
+
+                                  </div>
+                                  <span class="help-block">
+
+                          </div>
+                          <div class="col-md-6 col-md-offset-6">
+                          <br>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Update</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
                     </div>
                     <div class="col-md-9 col-sm-9 col-xs-12">
 
@@ -166,67 +207,192 @@
 
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-
-                            <!-- start user projects -->
-                            <table class="data table table-striped no-margin">
-                              <thead>
-                                <tr>
-                                  <th>#</th>
-                                  <th>Project Name</th>
-                                  <th>Client Company</th>
-                                  <th class="hidden-phone">Hours Spent</th>
-                                  <th>Contribution</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>1</td>
-                                  <td>New Company Takeover Review</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">18</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="35"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>New Partner Contracts Consultanci</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">13</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-danger" data-transitiongoal="15"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>Partners and Inverstors report</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">30</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="45"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>4</td>
-                                  <td>New Company Takeover Review</td>
-                                  <td>Deveint Inc</td>
-                                  <td class="hidden-phone">28</td>
-                                  <td class="vertical-align-mid">
-                                    <div class="progress">
-                                      <div class="progress-bar progress-bar-success" data-transitiongoal="75"></div>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <!-- end user projects -->
-
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                              <div class="x_title" style="border: none!important;">
+                                <h2>Personal Details</h2>
+                                <ul class="nav navbar-right panel_toolbox">
+                                  @if($id == auth()->user()->id)
+                                  <button class="btn btn-info up" id="formButton"><i class="fa fa-edit"></i> Edit</button>
+                                  @else
+                                  @endif
+                                </ul>
+                                <div class="clearfix"></div>
+                              </div>
+                              <div class="row">
+                                <form id="form2">
+                                  <div class="col-md-6 col-sm-9 col-xs-12">
+                                  <table class="table m-0">
+                                    <tbody>
+                                      <tr>
+                                        <th>Full Name</th>
+                                        <td>{{ $profile->getName($profile->userid)->name ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Gender</th>
+                                        <td>{{ $profile->gender ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Birthdate</th>
+                                        <td>{{ $profile->birthdate ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Marital Status</th>
+                                        <td>{{ $profile->marital_status ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Address</th>
+                                        <td>{{ $profile->address ?? 'Not specified' }}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="col-md-6 col-sm-9 col-xs-12">
+                                  <table class="table m-0">
+                                    <tbody>
+                                      <tr>
+                                        <th>Email</th>
+                                        <td>{{ $profile->getName($profile->userid)->email ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Mobile no.</th>
+                                        <td>{{ $profile->mobile_number ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Facebook</th>
+                                        <td>{{ $profile->facebook ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Skype</th>
+                                        <td>{{ $profile->skype ?? 'Not specified' }}</td>
+                                      </tr>
+                                      <tr>
+                                        <th>Website</th>
+                                        <td>{{ $profile->website ?? 'Not specified' }}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                </form>
+                                <form id="form1" style="display:none;" method="POST" action="{{route('update_profile', ['id' => $profile->id])}}">
+                                  @method('PATCH')
+                                  @csrf
+                                   <div class="col-md-6 col-sm-9 col-xs-12">
+                                  <table class="table m-0">
+                                    <tbody>
+                                      <tr>
+                                        <th>Full Name</th>
+                                        <td>
+                                          <input type="text" name="name" value="{{ $profile->getName($profile->userid)->name ?? 'Not specified' }}" class="form-control" required="required">
+                                          @if ($errors->has('name'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong>{{ $errors->first('name') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Gender</th>
+                                        <td><select class="form-control" name="gender" required="required">
+                                          <option value="Male" @if($profile->gender == "Male") selected @endif)>Male</option>
+                                          <option value="Female" @if($profile->gender == "Female") selected @endif>Female</option>
+                                        </select></td>
+                                      </tr>
+                                      <tr>
+                                        <th>Birthdate</th>
+                                        <td><input type="date" name="birthdate" class="form-control" required="required" value="{{ $profile->birthdate ?? null }}">
+                                          @if ($errors->has('birthdate'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('birthdate') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Marital Status</th>
+                                        <td>
+                                          <select class="form-control" name="marital_status">
+                                            <option value="Single" @if($profile->marital_status == "Single") selected @endif)>Single</option>
+                                            <option value="Married" @if($profile->marital_status == "Married") selected @endif>Married</option>
+                                            <option value="Complicated" @if($profile->marital_status == "Complicated") selected @endif>Complicated</option>
+                                            <option value="Windowed" @if($profile->marital_status == "Windowed") selected @endif>Windowed</option>
+                                          </select>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Address</th>
+                                        <td><input type="text" name="address" class="form-control" required="required" value="{{ $profile->address ?? old('address') }}">
+                                          @if ($errors->has('address'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('address') }}</strong>
+                                              </span>
+                                          @endif</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                <div class="col-md-6 col-sm-9 col-xs-12">
+                                  <table class="table m-0">
+                                    <tbody>
+                                       <tr>
+                                        <th>Email</th>
+                                        <td><input type="text" value="{{auth()->user()->email}}" name="email" class="form-control" required="required">
+                                        @if ($errors->has('email'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('email') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Mobile Number</th>
+                                        <td><input type="text" name="mobile_number" class="form-control" required="required" value="{{ $profile->mobile_number ?? old('mobile_number')}}">
+                                          @if ($errors->has('mobile_number'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('mobile_number') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Facebook</th>
+                                        <td><input type="url" name="facebook" class="form-control" required="required" value="{{ $profile->facebook ?? old('facebook') }}">
+                                          @if ($errors->has('facebook'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('facebook') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Skype</th>
+                                        <td><input type="text" name="skype" class="form-control" required="required" value="{{ $profile->skype ?? old('skype') }}">
+                                          @if ($errors->has('skype'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('skype') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Website</th>
+                                        <td><input type="url" name="website" class="form-control" required="required" value="{{ $profile->website ?? old('website') }}">
+                                          @if ($errors->has('website'))
+                                              <span class="invalid-feedback" role="alert">
+                                                  <strong class="st">{{ $errors->first('website') }}</strong>
+                                              </span>
+                                          @endif
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <th></th>
+                                        <td><button class="btn btn-success pull-right normal" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Updating...">Update</button></td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                </form>
+                              </div>
+                            </div>
                           </div>
                           <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
                             <p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui
@@ -242,4 +408,68 @@
           </div>
         </div>
         <!-- /page content -->
+        @section('footer-assets')
+         <script src="{{asset('js/toastr.min.js')}}"></script>
+           <script type="text/javascript">
+              @if(Session::has('message'))
+              var type = "{{Session::get('alert-type','success')}}";
+              switch(type){
+                case 'success':
+                toastr.success("{{Session::get('message')}}");
+                break;
+              }
+
+             @endif
+          </script>
+        <script>
+          $(function() {
+
+  // We can attach the `fileselect` event to all file inputs on the page
+  $(document).on('change', ':file', function() {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    input.trigger('fileselect', [numFiles, label]);
+  });
+
+  // We can watch for our custom `fileselect` event like this
+  $(document).ready( function() {
+      $(':file').on('fileselect', function(event, numFiles, label) {
+
+          var input = $(this).parents('.input-group').find(':text'),
+              log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+          if( input.length ) {
+              input.val(log);
+          } else {
+              if( log ) alert(log);
+          }
+
+      });
+  });
+
+});
+        </script>
+        <script>
+          $("#formButton").click(function(){
+            $("#form1").toggle();
+            $("#form2").toggle();
+        });
+        </script>
+        <script type="text/javascript">
+           function showImage(src,target) {
+            var fr=new FileReader();
+            // when image is loaded, set the src of the image where you want to display it
+            fr.onload = function(e) { target.src = this.result; };
+            src.addEventListener("change",function() {
+              // fill fr with image data
+              fr.readAsDataURL(src.files[0]);
+            });
+          }
+
+          var src = document.getElementById("src");
+          var target = document.getElementById("target");
+          showImage(src,target);
+        </script>
+        @endsection
 @endsection

@@ -95,20 +95,24 @@
             <div class="top_nav">
                 <div class="nav_menu">
                     <nav>
-                       {{--  <div class="nav toggle">
-                            <a id="menu_toggle"><img src="{{asset('images/menu(1).png')}}" v-on:click="showLogo" height="25" width="25"></a>
-                        </div> --}}
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><img src="{{asset('images/menu(1).png')}}" height="25" width="25"></a>
+                        </div>
 
                         <ul class="nav navbar-nav navbar-right">
 
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{asset('images/profile.png')}}" alt="">{{Auth::user()->name}}
+                                    @if(!empty(getImage()) && getImage() !==null)
+                                    <img src="/profile/{{getImage()}}" style="width: 40px;height: 40px;border-radius: 50%;"  alt="">{{Auth::user()->name}}
+                                    @else
+                                     <img src="{{url('images/placeholder.jpg')}}" style="width: 40px;height: 40px;border-radius: 50%;"  alt="">{{Auth::user()->name}}
+                                     @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li>
-                                        <a class="dropdown-item" href="{{ route('profile') }}">
+                                        <a class="dropdown-item" href="{{ route('profile', ['id'=> auth()->user()->id]) }}">
                                             {{ __('Account Settings') }}
                                         </a>
                                          <a class="dropdown-item" href="{{ route('reset') }}">
@@ -173,7 +177,7 @@
             $this.button('loading');
               setTimeout(function() {
                  $this.button('reset');
-             }, 1000);
+             }, 2000);
           });
 
         </script>

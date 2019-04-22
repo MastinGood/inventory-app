@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use App\Branch;
 use Auth;
+use App\Profile;
 class AppServiceProvider extends ServiceProvider
 {
     /**

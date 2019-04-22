@@ -11,6 +11,7 @@ use App\Branch;
 use DB;
 use Hash;
 use Carbon\Carbon;
+use App\Profile;
 class HomeController extends Controller
 {
     /**
@@ -144,7 +145,29 @@ class HomeController extends Controller
                  );
         return redirect()->route('home')->with($notification);
     }
-    public function showprofile(){
-        return view('profile.index');
+    public function showprofile($id){
+        $pro = Profile::where('userid', $id)->first();
+        if($pro){
+
+            $profile = Profile::where('userid', $id)->first();
+        }
+        else{
+            $profile = new Profile;
+            $profile->userid = auth()->user()->id;
+            $profile->gender = null;
+            $profile->birthdate = null;
+            $profile->marital_status = null;
+            $profile->address = null;
+            $profile->mobile_number = null;
+            $profile->facebook = null;
+            $profile->skype = null;
+            $profile->website = null;
+            $profile->save();
+
+        }
+
+
+
+        return view('profile.index', compact('id','profile', 'id'));
     }
 }
