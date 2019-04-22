@@ -1,7 +1,7 @@
 @extends('layouts.admin-template')
 
 @section('content')
-@section('header-asset')
+@section('header-assets')
 <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
     <link href="{{asset('../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css')}}" rel="stylesheet">
@@ -32,24 +32,24 @@
                   <div class="x_content">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                       <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 ol-sm-12 col-xs-12">
                            <form class="form-horizontal" action="{{route('admin.report.generate')}}" method="POST">
                               @csrf
-                              <div class="col-md-4">
+                              <div class="col-md-4 col-sm-6 col-xs-12">
                                 <label>Start Date - End Date</label>
                                   <fieldset>
                                     <div class="control-group">
                                       <div class="controls">
                                         <div class="input-prepend input-group">
                                           <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span>
-                                          <input type="text" style="width: 270px" name="date" id="reservation" class="form-control" value="new Date()" />
+                                          <input type="text" name="date" id="reservation" class="form-control col-md-4 col-sm-8 colxs-12" value="new Date()" />
                                         </div>
 
                                       </div>
                                     </div>
                                   </fieldset>
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-3 col-sm-6 col-xs-12">
                                 <label>Branch</label>
                                 <select name="branch" class="form-control">
                                   <option value="all" selected>All</option>
@@ -60,7 +60,7 @@
                                  @endif
                                 </select>
                               </div>
-                              <div class="col-md-3">
+                              <div class="col-md-3 col-sm-12 col-xs-12">
                                 <label>Item Type</label>
                                 <select name="type" class="form-control">
                                   <option value="all" selected>All</option>
@@ -71,7 +71,7 @@
                                  @endif
                                 </select>
                               </div>
-                              <div class="col-md-2">
+                              <div class="col-md-2 col-sm-6 col-xs-12">
                                 <br>
                                 <button type="submit" class="btn btn-success btn-lg se1" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Loading...">Generate Report</button>
                               </div>

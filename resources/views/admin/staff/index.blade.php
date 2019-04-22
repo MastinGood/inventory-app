@@ -1,7 +1,7 @@
 @extends('layouts.admin-template')
 
 @section('content')
-@section('header-asset')
+@section('header-assets')
 <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
     <link href="{{asset('../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css')}}" rel="stylesheet">

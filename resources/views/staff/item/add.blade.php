@@ -1,6 +1,6 @@
 @extends('layouts.admin-template')
 @section('content')
-@section('header-asset')
+@section('header-assets')
 <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
 @endsection

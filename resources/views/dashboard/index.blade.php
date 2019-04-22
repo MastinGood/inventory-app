@@ -10,25 +10,13 @@
         });
     });
 </script>
-<style>
-    .tab1 {
-        display: none !important;
-        overflow: hidden!important;
-        z-index: 0!important;
-
-    }
-
-    .tab2 {
-        display: none !important;
-        overflow: hidden!important;
-        z-index: 0!important;
-    }
-
-    .tab3 {
-        display: none !important;
-        overflow: hidden!important;
-        z-index: 0!important;
-    }
+<style type="text/css">
+  .tab2{
+    display: none!important;
+  }
+   .tab3{
+    display: none!important;
+  }
 </style>
 @endsection
 @section('content')
@@ -374,28 +362,28 @@
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                                         <div class="col-md-4">
-                                            <a class="nav-item nav-link active sa" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" v-on:click="showTab1" style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Today's Asset</a>
+                                            <a class="nav-item nav-link active sa" id="nav-home-tab" role="tab" aria-controls="nav-home" aria-selected="true"  style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Today's Asset</a>
                                         </div>
                                         <div class="col-md-4">
-                                            <a class="nav-item nav-link sa" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" v-on:click="showTab2" style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Yesterday</a>
+                                            <a class="nav-item nav-link sa" id="nav-profile-tab" role="tab" aria-controls="nav-profile" aria-selected="false"  style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Yesterday</a>
                                         </div>
                                         <div class="col-md-4">
-                                            <a class="nav-item nav-link sa" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" v-on:click="showTab3" style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Last Month</a>
+                                            <a class="nav-item nav-link sa" id="nav-contact-tab" role="tab" aria-controls="nav-contact" aria-selected="false" style="font-size: 16px;color: #6b6f82;"><img src="{{url('images/calendar.png')}}" width="20" height="20" /> Last Month</a>
                                         </div>
                                     </div>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
-                                <div :class="{ tab1 : active1 }" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="tab1" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_today}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_today, 2, '.', ',')}}</span></h1>
                                     </div>
-                                    <div class="col-md-6">
-                                        <img src="{{url('images/growth.png')}}" width="80" height="80" />
-                                    </div>
+                                      <div class="col-md-6">
+                                          <img src="{{url('images/growth.png')}}" width="80" height="80">
+                                      </div>
                                     <br />
                                     <table class="table table-striped" height="350" style="margin-bottom: none!important;">
                                         <thead>
@@ -421,12 +409,12 @@
                                          See More
                                     </a>
                                 </div>
-                                <div :class="{ tab2 : active2 }" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <div class="tab2" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="display: none!important;">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_yesterday}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_yesterday, 2, '.', ',')}}</span></h1>
                                     </div>
                                     <div class="col-md-6">
                                         <img src="{{url('images/graph(2).png')}}" width="80" height="80" />
@@ -456,12 +444,12 @@
                                          See More
                                     </a>
                                 </div>
-                                <div :class="{ tab3 : active3 }" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="tab3" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" style="display: none;">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_month}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_month, 2, '.', ',')}}</span></h1>
                                     </div>
                                     <div class="col-md-6">
                                         <img src="{{url('images/bars-chart.png')}}" width="80" height="80" />
@@ -504,14 +492,16 @@
                         <div class="x_content">
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+
+                                      <div class="col-md-6 col-sm-6 col-xs-6" style="margin: 0px auto;display: block;">
                                         <h2 class="display-2 text-center pull-right" style="font-size: 3rem!important;margin-top: 10px"><span class="counter">{{$allbranchtotal}}</span><br>
                                             <small>Total Branch</small>
                                         </h2>
                                     </div>
-                                     <div class="col-md-6">
+                                     <div class="col-md-6 col-sm-6 col-xs-6" style="margin: 0px auto;display: block;">
                                         <img src="{{url('images/building(1).png')}}" height="72">
+
                                     </div>
                                 </div>
                             </div>
@@ -612,24 +602,24 @@
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <div class="col-md-12 col-sm-12 col-xs-12 text-center">
                                         <div class="col-md-4 col-xs-4 col-xs-4">
-                                            <a class="nav-item nav-link active sa" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true" v-on:click="showTab1"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;" /> Today's Asset</a>
+                                            <a class="nav-item nav-link active sa" id="nav-home-tab" role="tab" aria-controls="nav-home" aria-selected="true" v-on:click="showTab1"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;" /> Today's Asset</a>
                                         </div>
                                         <div class="col-md-4 col-xs-4 col-xs-4">
-                                            <a class="nav-item nav-link sa" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false" v-on:click="showTab2"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Yesterday</a>
+                                            <a class="nav-item nav-link sa" id="nav-profile-tab" role="tab" aria-controls="nav-profile" aria-selected="false" v-on:click="showTab2"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Yesterday</a>
                                         </div>
                                         <div class="col-md-4 col-xs-4 col-xs-4">
-                                            <a class="nav-item nav-link sa" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false" v-on:click="showTab3"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Last Month</a>
+                                            <a class="nav-item nav-link sa" id="nav-contact-tab" role="tab" aria-controls="nav-contact" aria-selected="false" v-on:click="showTab3"><img src="{{url('images/calendar.png')}}" width="20" height="20" style="color: #2c303b!important;"/> Last Month</a>
                                         </div>
                                     </div>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
-                                <div :class="{ tab1 : active1 }" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="tab1" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_today}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_today, 2, '.', ',')}}</span></h1>
                                     </div>
                                     <div class="col-md-6">
                                         <img src="{{url('images/growth.png')}}" width="80" height="72" />
@@ -670,13 +660,12 @@
                                          See More
                                     </a>
                                 </div>
-
-                                <div :class="{ tab2 : active2 }" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <div class="tab2" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="display: none;">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_yesterday}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_yesterday, 2, '.', ',')}}</span></h1>
                                     </div>
                                     <div class="col-md-6">
                                         <img src="{{url('images/graph(2).png')}}" width="80" height="80" />
@@ -714,13 +703,12 @@
                                          See More
                                     </a>
                                 </div>
-
-                                <div :class="{ tab3 : active3 }" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <div class="tab3" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                                     <br />
                                     <br />
                                     <div class="col-md-6">
                                         <br />
-                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{$total_month}}</span></h1>
+                                        <h1 class="display-2 text-center pull-right" style="font-size:3rem;">₱<span class="counter">{{number_format($total_month, 2, '.', ',')}}</span></h1>
                                     </div>
                                     <div class="col-md-6">
                                         <img src="{{url('images/bars-chart.png')}}" width="80" height="80" />
@@ -828,33 +816,25 @@
 @endsection
 @section('footer-assets')
 
-<script>
-    new Vue({
-        el: '#app',
-        data: {
-            active1: false,
-            active2: true,
-            active3: true,
-        },
-        methods: {
-            showTab1() {
-                this.active1 = false;
-                this.active2 = true;
-                this.active3 = true;
-            },
-            showTab2() {
-                this.active2 = false;
-                this.active1 = true;
-                this.active3 = true;
-            },
-            showTab3() {
-                this.active3 = false;
-                this.active2 = true;
-                this.active1 = true;
-            },
-        }
+ <script>
+   $("#nav-home-tab").click(function(){
+            $(".tab1").show();
+            $(".tab2").hide();
+            $(".tab3").hide();
     });
-</script>
+     $("#nav-profile-tab").click(function(){
+            $(".tab2").show();
+            $(".tab1").hide();
+            $(".tab3").hide();
+    });
+      $("#nav-contact-tab").click(function(){
+            $(".tab3").show();
+            $(".tab2").hide();
+            $(".tab1").hide();
+    });
+
+ </script>
+
 <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
 <script src="{{asset('../js/jquery.counterup.min.js')}}"></script>
 <script src="{{asset('js/toastr.min.js')}}"></script>

@@ -1,6 +1,6 @@
 @extends('layouts.admin-template')
 
-@section('content')
+@section('contents')
 @section('header-asset')
 <!-- Datatables -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">

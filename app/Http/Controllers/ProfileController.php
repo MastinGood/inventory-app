@@ -62,4 +62,5 @@ class ProfileController extends Controller
           }
 
     }
+
 }

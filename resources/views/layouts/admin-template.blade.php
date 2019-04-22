@@ -36,7 +36,7 @@
             display: none!important;
         }
     </style>
-    @yield('header-asset')
+    @yield('header-assets')
 </head>
 
 <body class="nav-md">
@@ -45,8 +45,10 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
+                        <div class="navbar nav_title" style="border: 0;">
+                          <a href="{{route('home')}}" class="site_title" style="height: 63px"><img src="{{url('images/logo(2).png')}}"  width="54" height="51" class="log"> <span>ORGANICO</span></a>
+                        </div>
 
-                        <img src="{{url('images/logo.png')}}"  width="220" height="56" class="log">
                     </div>
 
                     <div class="clearfix"></div>
@@ -113,13 +115,14 @@
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li>
                                         <a class="dropdown-item" href="{{ route('profile', ['id'=> auth()->user()->id]) }}">
-                                            {{ __('Account Settings') }}
+                                            <img src="{{url('images/settings.png')}}"> {{ __(' Account Settings') }}
+
                                         </a>
                                          <a class="dropdown-item" href="{{ route('reset') }}">
-                                            {{ __('Change Password') }}
+                                            <img src="{{url('images/key.png')}}"> {{ __('Change Password') }}
                                         </a>
                                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            <img src="{{url('images/logout(1).png')}}"> {{ __('Logout') }}
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -152,7 +155,7 @@
 
     <!-- jQuery -->
     <script src="{{asset('../vendors/jquery/dist/jquery.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <!-- Bootstrap -->
     <script src="{{asset('../vendors/bootstrap/dist/js/bootstrap.min.js')}}"></script>
     <!-- FastClick -->

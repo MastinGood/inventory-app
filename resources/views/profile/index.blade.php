@@ -113,7 +113,7 @@
                           <br>
                           </div>
                           <div class="modal-footer">
-                            <button type="submit" class="btn btn-success">Update</button>
+                            <button type="submit" class="btn btn-success normal" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Loading...">Update</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           </div>
                           </form>
@@ -129,79 +129,46 @@
                           </li>
                           <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Personal Information</a>
                           </li>
-                          <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Account Settings</a>
-                          </li>
                         </ul>
                         <div id="myTabContent" class="tab-content">
                           <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 
                             <!-- start recent activity -->
                             <ul class="messages">
+                              @if(count($items))
+                              @foreach($items as $item)
                               <li>
-                                <img src="images/img.jpg" class="avatar" alt="Avatar">
+                                @if(!empty(getImage()) && getImage() !==null)
+                                <img src="/profile/{{$profile->photo}}" style="border-radius: 50%;" class="avatar" alt="Avatar">
+                                @else
+                                <img src="/images/placeholder.jpg" style="border-radius: 50%;" class="avatar" alt="Avatar">
+                                @endif
                                 <div class="message_date">
-                                  <h3 class="date text-info">24</h3>
-                                  <p class="month">May</p>
+                                  <h3 class="date text-info">{{\Carbon\Carbon::parse($item->addedat)->format('d')}}</h3>
+                                  <p class="month">{{\Carbon\Carbon::parse($item->addedat)->format('M')}}</p>
                                 </div>
                                 <div class="message_wrapper">
-                                  <h4 class="heading">Desmond Davison</h4>
-                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
+                                  <h4 class="heading">{{$item->getUser($item->addedby)->name}} <small>added a {{$item->name}} ({{$item->item_code}})</small></h4>
+                                  <blockquote class="message">{{$item->description}}</blockquote>
+                                  <img src="/uploads/{{$item->photo}}" width="140" height="140" alt="Avatar">
                                   <br />
-                                  <p class="url">
-                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
+                                  <p class="url" style="margin-top: 10px;">
+                                    <span class="fs1 text-info mt-3" aria-hidden="true" data-icon=""></span>
+                                    <a href="#" style="margin-top:10px; font-size: 13px;><i class="far fa-clock"></i> {{$item->created_at->diffForHumans()}} </a>
                                   </p>
                                 </div>
                               </li>
-                              <li>
-                                <img src="images/img.jpg" class="avatar" alt="Avatar">
-                                <div class="message_date">
-                                  <h3 class="date text-error">21</h3>
-                                  <p class="month">May</p>
+                              @endforeach
+                              @else
+                              <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="row">
+                                  <br>
+                                   <br><img src="{{url('images/blank.png')}}" width="100" height="100" style="margin: 0px auto;display: block;">
+                                   <br>
+                                <h2 class="text-center" style="color: #2c303b!important; font-size: 20px;margin-right: -20px;">Nothing added yet!!</h2>
                                 </div>
-                                <div class="message_wrapper">
-                                  <h4 class="heading">Brian Michaels</h4>
-                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                                  <br />
-                                  <p class="url">
-                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
-                                    <a href="#" data-original-title="">Download</a>
-                                  </p>
-                                </div>
-                              </li>
-                              <li>
-                                <img src="images/img.jpg" class="avatar" alt="Avatar">
-                                <div class="message_date">
-                                  <h3 class="date text-info">24</h3>
-                                  <p class="month">May</p>
-                                </div>
-                                <div class="message_wrapper">
-                                  <h4 class="heading">Desmond Davison</h4>
-                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                                  <br />
-                                  <p class="url">
-                                    <span class="fs1 text-info" aria-hidden="true" data-icon=""></span>
-                                    <a href="#"><i class="fa fa-paperclip"></i> User Acceptance Test.doc </a>
-                                  </p>
-                                </div>
-                              </li>
-                              <li>
-                                <img src="images/img.jpg" class="avatar" alt="Avatar">
-                                <div class="message_date">
-                                  <h3 class="date text-error">21</h3>
-                                  <p class="month">May</p>
-                                </div>
-                                <div class="message_wrapper">
-                                  <h4 class="heading">Brian Michaels</h4>
-                                  <blockquote class="message">Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua butcher retro keffiyeh dreamcatcher synth.</blockquote>
-                                  <br />
-                                  <p class="url">
-                                    <span class="fs1" aria-hidden="true" data-icon=""></span>
-                                    <a href="#" data-original-title="">Download</a>
-                                  </p>
-                                </div>
-                              </li>
-
+                              </div>
+                              @endif
                             </ul>
                             <!-- end recent activity -->
 
@@ -409,6 +376,7 @@
         </div>
         <!-- /page content -->
         @section('footer-assets')
+
          <script src="{{asset('js/toastr.min.js')}}"></script>
            <script type="text/javascript">
               @if(Session::has('message'))

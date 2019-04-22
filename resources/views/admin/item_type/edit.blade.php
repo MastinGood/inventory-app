@@ -1,6 +1,6 @@
 @extends('layouts.admin-template')
 @section('content')
-@section('header-asset')
+@section('header-assets')
 <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="{{asset('css/toastr.min.css')}}">
 @endsection
@@ -93,7 +93,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                           <a href="{{route('admin.type.index')}}" class="btn btn-primary" type="button">Back</a>
                           <button class="btn btn-primary" type="reset">Reset</button>
-                          <button type="submit" class="btn btn-success">Submit</button>
+                          <button type="submit" class="btn btn-success normal" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Loading...">Submit</button>
                         </div>
                       </div>
                     </form>

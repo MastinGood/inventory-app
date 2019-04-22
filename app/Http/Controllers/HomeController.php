@@ -166,8 +166,8 @@ class HomeController extends Controller
 
         }
 
+        $items = Item::where('addedby', $id)->orderBy('id', 'DESC')->get();
 
-
-        return view('profile.index', compact('id','profile', 'id'));
+        return view('profile.index', compact('id','profile', 'id', 'items'));
     }
 }
